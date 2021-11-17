@@ -1,63 +1,41 @@
 import { Component } from '@angular/core';
-import { FormControl, FormGroup, FormBuilder, Validators} from '@angular/forms';
-import { nameValidation } from './shared/user-validators';
+import { User } from './user';
+import {EnrollmentService } from './enrollment.service'
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  [x: string]: any;
-  get userName(){
-    return this.registrationForm.get('userName');
-  }
-// isSubmittes:boolean=false
-constructor(private fb: FormBuilder){}
-registrationForm = this.fb.group({
-  userName:['Srinivas', [Validators.required, Validators.minLength(3), nameValidation(/password/)]],
-  password:[''],
-  confirmPassword:[''],
-  address: this.fb.group({
-    city:[''],
-    state:[''],
-    postalCode:['']
-  })
-});
+  topics = ['Angular', 'React','Vue']
+  topichasError = true;
+  submitted = false;
 
-  // registrationForm = new FormGroup({
-  //   username : new FormControl('Srinivas', Validators.required),
-  //   password : new FormControl(''),
-  //   confirmPassword : new FormControl(''),
-  //   address: new FormGroup({
-  //     city: new FormControl(''),
-  //     state: new FormControl(''),
-  //     postalCode: new FormControl('')
-  //   })
-  // });
+  userModel = new User('Srinivas', 'abc@gmail.com', 1234567890, 'default', 'morning', true);
 
-  loadAPI(){
-    this.registrationForm.patchValue({
-      username: 'Srinivas',
-      password: 'test',
-      confirmPassword: 'test',
-      address:{
-        city:'City',
-        state:'State',
-        postalCode: '12345'
-      }
-    })
+  constructor(private _enrollmentService: EnrollmentService){}
+
+  validateTopic(value: any){
+    if( value === "default"){
+      this.topichasError=true;
+    } else {
+      this.topichasError=false;
+    }
   }
-  // loadAPI(){
-  //   this.registrationForm.setValue({
-  //     username: 'Srinivas',
-  //     password: 'test',
-  //     confirmPassword: 'test',
-  //     address:{
-  //       city:'City',
-  //       state:'State',
-  //       postalCode: '12345'
-  //     }
-  //   })
-  // }
+  onSubmit(){
+    // console.log(this.userModel)
+
+    this.submitted=true;
+    this._enrollmentService.enroll(this.userModel).subscribe(
+      (      data: any) => console.log('success!', data),
+      (      error: any) => console.error('error!', error)
+      )
+      
+    
+  }
 }
+function data(arg0: any, data: any) {
+  throw new Error('Function not implemented.');
+}
+
