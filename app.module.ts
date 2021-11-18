@@ -3,25 +3,19 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { EmployeeComponent } from './employee/employee.component';
-import { EmployeeDetailsComponent } from './employee-details/employee-details.component';
-import { EmployeeService } from './employee.service';
-import { HttpClientModule} from '@angular/common/http'
-
+import { HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http'
+import { InitiateInterceptor } from './initiate.interceptor';
 
 @NgModule({
   declarations: [
-    AppComponent,
-    EmployeeComponent,
-    EmployeeDetailsComponent
+    AppComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule
-    
   ],
-  providers: [EmployeeService],
+  providers: [{ provide: HTTP_INTERCEPTORS, useClass: InitiateInterceptor, multi: true }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
