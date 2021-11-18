@@ -1,3 +1,8 @@
-<h2>Welcome to My {{title}}</h2>
-<app-employee></app-employee>
-<app-employee-details></app-employee-details>
+<h2>Users</h2>
+
+<button (click)="loadUsers()">Load users</button>
+<ul>
+    <li *ngFor="let user of users | async">
+      {{ user.name}}
+    </li>
+  </ul>
